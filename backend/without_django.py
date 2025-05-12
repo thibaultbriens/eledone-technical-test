@@ -24,7 +24,7 @@ def start(n, m, basePosArg):
     
     wasteNumber = m
     agentPosList = randList(n, thirdArg=True)
-    wastePosList = randList(m)
+    wastePosList = randList(m, wastes=True)
     basePos = basePosArg
 
     game([])
@@ -34,8 +34,11 @@ def start(n, m, basePosArg):
 '''
 @return a random list of positions from (0, 0) to (31, 31)
 '''
-def randList(n, thirdArg = False):
+def randList(n, thirdArg = False, wastes = False):
     allPos = [(i, j) for i in range(32) for j in range(32)]
+    if wastes:
+        for (i, j, _) in agentPosList:
+            allPos.remove((i, j))
     pos = random.sample(allPos, n)
     if thirdArg:
         return [(i, j, False) for (i, j) in pos]
