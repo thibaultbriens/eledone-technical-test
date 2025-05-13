@@ -32,6 +32,14 @@ const App: React.FC = () => {
     checkGameStatus();
   }, []);
 
+  // Check if the game is complete
+  useEffect(() => {
+    if (gameState && gameState.waste_collected === gameState.total_wastes && gameState.total_wastes > 0) {
+      // The game has completed automatically - no need to call stopGame again
+      // The success message will be shown on the grid
+    }
+  }, [gameState]);
+
   const handleStart = async (config: GameConfig) => {
     try {
       setIsLoading(true);
@@ -87,7 +95,7 @@ const App: React.FC = () => {
         onStart={handleStart}
         onStop={handleStop}
         onNextRound={handleNextRound}
-        isGameActive={!!gameState}
+        isGameActive={!!gameState && !(gameState.waste_collected === gameState.total_wastes)}
       />
       
       <div className="main-content">
