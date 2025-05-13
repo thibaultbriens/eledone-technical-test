@@ -2,7 +2,9 @@
 
 This project consists of a Django REST API backend and a TypeScript React frontend that together simulate a waste collection game featuring autonomous agents (inspired by Wall-E). It was developed as a technical assessment for Eledone.
 
-### Installation
+## Installation
+
+### Backend Setup
 
 1. Clone the repository
 2. Install the dependencies (recommended in a virtual environment)
@@ -15,10 +17,35 @@ This project consists of a Django REST API backend and a TypeScript React fronte
    python manage.py makemigrations walle
    python manage.py migrate walle
    ```
-4. Launch the server
+4. Launch the backend server
    ```
    python manage.py runserver
    ```
+
+### Frontend Setup
+
+1. Navigate to the frontend directory
+   ```
+   cd frontend
+   ```
+2. Install dependencies
+   ```
+   npm install
+   ```
+3. Start the development server
+   ```
+   npm run dev
+   ```
+
+## How to Play
+
+1. Set the game parameters in the control panel:
+   - Number of cleaning agents
+   - Number of waste items
+   - Base position (X,Y coordinates)
+2. Click "Start Game" to initialize the simulation
+3. Use "Next Round" to advance the simulation step by step
+4. Click "Stop Game" to end the current simulation
 
 ## API Documentation
 
