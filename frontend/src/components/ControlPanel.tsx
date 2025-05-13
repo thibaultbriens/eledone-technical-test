@@ -7,13 +7,19 @@ interface ControlPanelProps {
   onStop: () => void;
   onNextRound: () => void;
   isGameActive: boolean;
+  isGamePaused: boolean;
+  isAutoRunning: boolean;
+  isGameComplete?: boolean; // Nouveau prop optionnel
 }
 
 const ControlPanel: React.FC<ControlPanelProps> = ({ 
   onStart, 
   onStop, 
   onNextRound,
-  isGameActive 
+  isGameActive,
+  isGamePaused,
+  isAutoRunning,
+  isGameComplete = false // valeur par défaut
 }) => {
   const [config, setConfig] = useState<GameConfig>({
     num_agents: 5,
@@ -35,6 +41,19 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
     onStart(config);
   };
 
+  // Determine the text for the start/pause button
+  const getStartButtonText = () => {
+    if (!isGameActive || isGameComplete) return "Start Game";
+    if (isGamePaused) return "Resume";
+    return "Pause";
+  };
+
+  // Determine the class for the start/pause button
+  const getStartButtonClass = () => {
+    if (!isGameActive || isGamePaused || isGameComplete) return "start-btn";
+    return "pause-btn";
+  };
+
   return (
     <div className="control-panel">
       <h2>Game Controls</h2>
@@ -49,7 +68,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             max="1000"
             value={config.num_agents}
             onChange={handleChange}
-            disabled={isGameActive}
+            disabled={isGameActive && !isGameComplete}
           />
         </div>
         
@@ -63,7 +82,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             max="1000"
             value={config.num_wastes}
             onChange={handleChange}
-            disabled={isGameActive}
+            disabled={isGameActive && !isGameComplete}
           />
         </div>
         
@@ -77,7 +96,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             max="31"
             value={config.base_position_x}
             onChange={handleChange}
-            disabled={isGameActive}
+            disabled={isGameActive && !isGameComplete}
           />
         </div>
         
@@ -91,24 +110,23 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             max="31"
             value={config.base_position_y}
             onChange={handleChange}
-            disabled={isGameActive}
+            disabled={isGameActive && !isGameComplete}
           />
         </div>
         
         <div className="button-group">
           <button 
             type="submit" 
-            className="btn start-btn"
-            disabled={isGameActive}
+            className={`btn ${getStartButtonClass()}`}
           >
-            Start Game
+            {getStartButtonText()}
           </button>
           
           <button 
             type="button" 
             className="btn next-btn"
             onClick={onNextRound}
-            disabled={!isGameActive}
+            disabled={!isGameActive || !isGamePaused || isAutoRunning || isGameComplete}
           >
             Next Round
           </button>
